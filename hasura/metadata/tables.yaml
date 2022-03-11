@@ -1,0 +1,133 @@
+- table:
+    schema: public
+    name: organizations
+  array_relationships:
+  - name: users
+    using:
+      foreign_key_constraint_on:
+        column: organization_id
+        table:
+          schema: public
+          name: users
+  select_permissions:
+  - role: ADMIN
+    permission:
+      columns:
+      - created_at
+      - deleted_at
+      - id
+      - name
+      - updated_at
+      filter:
+        id:
+          _eq: X-Hasura-Organization-Id
+      allow_aggregations: true
+  - role: CUSTOMER
+    permission:
+      columns:
+      - created_at
+      - deleted_at
+      - id
+      - name
+      - updated_at
+      filter:
+        id:
+          _eq: X-Hasura-Organization-Id
+      allow_aggregations: true
+- table:
+    schema: public
+    name: otps
+  object_relationships:
+  - name: user
+    using:
+      foreign_key_constraint_on: user_id
+- table:
+    schema: public
+    name: users
+  object_relationships:
+  - name: organization
+    using:
+      foreign_key_constraint_on: organization_id
+  array_relationships:
+  - name: otps
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          schema: public
+          name: otps
+  insert_permissions:
+  - role: ADMIN
+    permission:
+      check:
+        organization_id:
+          _eq: X-Hasura-Organization-Id
+      set:
+        organization_id: x-hasura-Organization-Id
+      columns:
+      - created_at
+      - email
+      - first_name
+      - last_name
+      - role
+      backend_only: false
+  select_permissions:
+  - role: ADMIN
+    permission:
+      columns:
+      - email
+      - first_name
+      - last_name
+      - id
+      - organization_id
+      - created_at
+      - deleted_at
+      - updated_at
+      - role
+      filter:
+        organization_id:
+          _eq: X-Hasura-Organization-Id
+      allow_aggregations: true
+  - role: CUSTOMER
+    permission:
+      columns:
+      - email
+      - first_name
+      - last_name
+      - id
+      - organization_id
+      - created_at
+      - deleted_at
+      - updated_at
+      - role
+      filter:
+        organization_id:
+          _eq: X-Hasura-Organization-Id
+      allow_aggregations: true
+  update_permissions:
+  - role: ADMIN
+    permission:
+      columns:
+      - deleted_at
+      - email
+      - first_name
+      - last_name
+      - role
+      - updated_at
+      filter:
+        organization_id:
+          _eq: X-Hasura-Organization-Id
+      check: null
+  - role: CUSTOMER
+    permission:
+      columns:
+      - first_name
+      - last_name
+      - updated_at
+      filter:
+        _and:
+        - organization_id:
+            _eq: X-Hasura-Organization-Id
+        - id:
+            _eq: X-Hasura-User-Id
+      check: null

@@ -1,0 +1,20 @@
+version: '3.6'
+
+services:
+  template:
+    container_name: h08-send-notification
+    image: localhost:5000/send.notification:latest
+    ports:
+      - 3009:3000
+    hostname: 'docker'
+    env_file:
+      ./.env
+    networks:
+      h08_network:
+        ipv4_address: 10.0.1.13
+    volumes:
+      - ./:/home/app/function
+      - /home/app/function/node_modules
+networks:
+    h08_network:
+        external: true

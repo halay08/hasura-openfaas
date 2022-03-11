@@ -1,0 +1,15 @@
+# don't lint:
+node_modules
+README.md
+tsconfig.json
+
+# config files
+.eslintrc.js
+.prettierrc.js
+
+# don't lint build output
+dist
+build
+lib
+# don't lint unit-test coverage
+coverage

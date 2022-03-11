@@ -1,0 +1,53 @@
+type Mutation {
+  authorizeOtp(
+    otp: String!
+  ): AuthorizeOtpResponse
+}
+
+type Mutation {
+  requestOtp(
+    email: String!
+  ): RequestOtpResponse
+}
+
+type Mutation {
+  sendNotifications(
+    type: NotificationType!
+    template_id: String
+    template_body: json
+    email_custom_message: String
+    email_subject: String
+    sms_text: String
+    emails: [String!]
+    cc: [String!]
+    bcc: [String!]
+    phones: [String!]
+    attachments: [AttachedFile!]
+  ): NotificationResponse
+}
+
+enum NotificationType {
+  EMAIL
+  SMS
+}
+
+input AttachedFile {
+  filename: String!
+  type: String!
+  content: String!
+  disposition: String!
+  contentId: String!
+}
+
+type NotificationResponse {
+  isSent: Boolean!
+}
+
+type RequestOtpResponse {
+  isSent: Boolean!
+}
+
+type AuthorizeOtpResponse {
+  token: String!
+}
+

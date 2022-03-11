@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS otps
+(
+    id SERIAL PRIMARY KEY ,
+    user_id INT NOT NULL,
+    otp_hash VARCHAR NOT NULL,
+    expires_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    CONSTRAINT otps_user_id_fkey FOREIGN KEY (user_id)
+        REFERENCES users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);

@@ -1,0 +1,11 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://127.0.0.1:8080
+functions:
+  send-notification:
+    lang: node-typescript-dev
+    handler: ./send-notification
+    timeout: 120
+    image: localhost:5000/send.notification:latest
+

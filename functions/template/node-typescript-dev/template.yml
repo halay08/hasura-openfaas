@@ -1,0 +1,2 @@
+language: node-typescript
+fprocess: nodemon index.js

@@ -1,0 +1,15 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://127.0.0.1:8080
+functions:
+  send-notification:
+    lang: node-typescript
+    handler: ./send-notification
+    timeout: 120
+    image: ${REGISTRY:-localhost:5000/send.notification}
+    environment_file:
+      - hasura.yml
+      - sendgrid.yml
+      - twilio.yml
+      - timeout.yml

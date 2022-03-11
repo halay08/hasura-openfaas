@@ -1,0 +1,11 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://127.0.0.1:8080
+functions:
+  hasura-auth-webhook:
+    lang: node-typescript
+    handler: ./hasura-auth-webhook
+    image: ${REGISTRY:-localhost:5000/hasura-auth-webhook}
+    environment_file:
+      - hasura.yml

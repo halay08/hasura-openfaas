@@ -1,0 +1,58 @@
+version: "3.9"
+
+services:
+  registry:
+    image: registry:2
+    restart: always
+    ports:
+      - 5000:5000
+    networks:
+      h08_network:
+        ipv4_address: 10.0.0.2
+
+  h08-postgres:
+    image: postgres:12
+    container_name: h08-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGTZ: ${POSTGRES_TIMEZONE}
+    ports:
+      - target: 5432
+        published: ${POSTGRES_ENDPOINT_PORT}
+        protocol: tcp
+        mode: host
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      h08_network:
+        ipv4_address: 10.0.0.3
+  h08-graphql-engine:
+    image: hasura/graphql-engine:v2.2.0
+    container_name: h08-graphql-engine
+    ports:
+      - target: 8080
+        published: ${HASURA_ENDPOINT_PORT}
+        protocol: tcp
+        mode: host
+    volumes:
+      - ./hasura/migrations:/hasura-migrations
+    depends_on:
+      - h08-postgres
+    restart: always
+    env_file:
+      ./.env
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: "postgres://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@h08-postgres:5432/${POSTGRES_DATABASE}"
+    networks:
+      h08_network:
+        ipv4_address: 10.0.0.4
+
+volumes:
+  postgres_data:
+
+networks:
+  h08_network:
+    external: true

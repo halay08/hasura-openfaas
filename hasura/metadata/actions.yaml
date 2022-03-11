@@ -1,0 +1,34 @@
+actions:
+- name: authorizeOtp
+  definition:
+    kind: synchronous
+    handler: '{{FUNCTION_AUTHORIZE_OTP_URL}}'
+  permissions:
+  - role: anonymous
+- name: requestOtp
+  definition:
+    kind: synchronous
+    handler: '{{FUNCTION_REQUEST_OTP_URL}}'
+  permissions:
+  - role: anonymous
+- name: sendNotifications
+  definition:
+    kind: synchronous
+    handler: '{{FUNCTION_SEND_NOTIFICATION_URL}}'
+custom_types:
+  enums:
+  - name: NotificationType
+    values:
+    - description: null
+      is_deprecated: null
+      value: EMAIL
+    - description: null
+      is_deprecated: null
+      value: SMS
+  input_objects:
+  - name: AttachedFile
+  objects:
+  - name: NotificationResponse
+  - name: RequestOtpResponse
+  - name: AuthorizeOtpResponse
+  scalars: []

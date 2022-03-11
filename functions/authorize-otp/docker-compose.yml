@@ -1,0 +1,20 @@
+version: '3.6'
+
+services:
+  template:
+    container_name: h08-authorize-otp
+    image: localhost:5000/h08-authorize-otp:latest
+    ports:
+      - 3002:3000
+    hostname: 'docker'
+    env_file:
+      ./.env
+    volumes:
+      - ./:/home/app/function
+      - /home/app/function/node_modules
+    networks:
+      h08_network:
+        ipv4_address: 10.0.1.11
+networks:
+    h08_network:
+        external: true
